@@ -82,6 +82,29 @@ O frontend estará disponível em: `http://localhost:3000`
 2. Gere suas credenciais de teste/produção
 3. Configure o access token no código
 
+Testando Pagamentos
+Para testar o checkout em ambiente de desenvolvimento, use os seguintes cartões de teste do Mercado Pago:
+💳 Cartões para Aprovação (APRO)
+
+Visa: 4013 5406 8274 6260
+Mastercard: 5416 7526 0258 2580
+American Express: 3711 8030 3257 522
+
+❌ Cartões para Rejeição
+
+Fundos insuficientes: 4013 5406 8274 6269
+Recusado: 4168 8188 4444 7115
+
+📋 Dados para Teste
+
+CVV: Qualquer código de 3 ou 4 dígitos
+Data de vencimento: Qualquer data futura
+Nome do portador: Qualquer nome
+CPF: 12345678909
+
+⚠️ Importante: Estes cartões funcionam apenas no ambiente de teste (sandbox) do Mercado Pago.
+https://www.mercadopago.com.br/developers/pt/docs/checkout-api/additional-content/your-integrations/test/cards
+
 ## 📱 Como Usar
 
 ### Acesso Cliente
