@@ -1,0 +1,97 @@
+
+.product-section {
+    margin-bottom: 30px;
+}
+
+.section-title {
+    padding: 12px 15px;
+    margin: 20px 15px 10px;
+    font-weight: 700;
+    font-size: 1.25rem;
+    letter-spacing: 0.5px;
+    background-color: var(--white);
+    border-left: 4px solid;
+}
+
+.section-title.hortifruti {
+    color: var(--primary-color);
+    border-left-color: var(--primary-color);
+}
+
+.section-title.caseiros {
+    color: var(--secondary-color);
+    border-left-color: var(--secondary-color);
+}
+
+.product-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 12px;
+}
+
+.product-card {
+    background: var(--white);
+    border-radius: var(--border-radius-md);
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    transition: var(--transition);
+    display: grid;
+    grid-template-areas:
+        "nome foto"
+        "preco carrinho";
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    padding: 14px;
+    min-height: 120px;
+}
+
+.product-card:hover {
+    box-shadow: var(--shadow-md);
+}
+
+.product-image {
+    grid-area: foto;
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: var(--border-radius-sm);
+    justify-self: end;
+    border: 1px solid #f0f0f0;
+}
+
+.product-name {
+    grid-area: nome;
+    align-self: start;
+    font-weight: 500;
+    color: var(--text-color);
+    padding-right: 8px;
+    font-size: 0.95rem;
+    line-height: 1.4;
+}
+
+.product-price {
+    grid-area: preco;
+    font-weight: 700;
+    color: var(--primary-color);
+    font-size: 1rem;
+    align-self: end;
+    margin-top: 6px;
+}
+
+@media (min-width: 768px) {
+    .product-card {
+        width: calc(50% - 6px);
+        padding: 16px;
+    }
+
+    .product-image {
+        width: 96px;
+        height: 96px;
+    }
+
+    .product-name {
+        font-size: 1.05rem;
+    }
+}

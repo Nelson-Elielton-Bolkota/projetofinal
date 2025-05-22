@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finalizar Compra - Casa & Sabor</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/components/checkout.css">
+    <!-- SDK MercadoPago.js -->
+    <script src="https://sdk.mercadopago.com/js/v2"></script>
+    <!-- VLibras -->
+    <div vw class="enabled">
+        <div vw-access-button class="active"></div>
+        <div vw-plugin-wrapper>
+            <div class="vw-plugin-top-wrapper"></div>
+        </div>
+    </div>
+    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+    <script>
+        new window.VLibras.Widget('https://vlibras.gov.br/app');
+    </script>
+</head>
+
+<body>
+    <div class="checkout-wrapper">
+        <!-- Header -->
+        <header class="checkout-header">
+            <div class="container">
+                <a href="index.html" class="back-link">
+                    <i class="fas fa-arrow-left"></i> Continuar comprando
+                </a>
+                <div class="logo-wrapper">
+                    <img src="images/logo.png" alt="Casa & Sabor" class="checkout-logo">
+                </div>
+                <div class="checkout-steps">
+                    <div class="step active">
+                        <span>1</span>
+                        <p>Carrinho</p>
+                    </div>
+                    <div class="step active">
+                        <span>2</span>
+                        <p>Pagamento</p>
+                    </div>
+                    <div class="step">
+                        <span>3</span>
+                        <p>Confirmação</p>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="checkout-main container">
+            <div class="checkout-grid">
+                <!-- Order Summary -->
+                <section class="order-summary">
+                    <h2 class="section-title"><i class="fas fa-shopping-basket"></i> Seu Pedido</h2>
+
+                    <div class="order-items" id="order-items">
+                        <!-- Itens serão inseridos via JS -->
+                    </div>
+
+                    <div class="order-totals">
+                        <div class="total-row">
+                            <span>Subtotal</span>
+                            <span id="subtotal">R$ 0,00</span>
+                        </div>
+                        <div class="total-row">
+                            <span>Entrega</span>
+                            <span id="delivery">Grátis</span>
+                        </div>
+                        <div class="total-row grand-total">
+                            <span>Total</span>
+                            <span id="order-total">R$ 0,00</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Checkout Form -->
+                <section class="checkout-form">
+                    <h2 class="section-title"><i class="fas fa-user-circle"></i> Informações Pessoais</h2>
+                    <form id="customer-form">
+                        <div class="form-group">
+                            <label for="name">Nome Completo</label>
+                            <input type="text" id="name" required>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="email">E-mail</label>
+                                <input type="email" id="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Telefone</label>
+                                <input type="tel" id="phone" required>
+                            </div>
+                        </div>
+
+                        <h2 class="section-title"><i class="fas fa-truck"></i> Endereço de Entrega</h2>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="cep">CEP</label>
+                                <input type="text" id="cep" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="address-number">Número</label>
+                                <input type="text" id="address-number" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="address">Endereço</label>
+                            <input type="text" id="address" required>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="complement">Complemento</label>
+                                <input type="text" id="complement">
+                            </div>
+                            <div class="form-group">
+                                <label for="neighborhood">Bairro</label>
+                                <input type="text" id="neighborhood" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="city">Cidade</label>
+                                <input type="text" id="city" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="state">Estado</label>
+                                <select id="state" required>
+                                    <option value="">Selecione</option>
+                                    <option value="AC">Acre</option>
+                                    <option value="AL">Alagoas</option>
+                                    <option value="AP">Amapá</option>
+                                    <option value="AM">Amazonas</option>
+                                    <option value="BA">Bahia</option>
+                                    <option value="CE">Ceará</option>
+                                    <option value="DF">Distrito Federal</option>
+                                    <option value="ES">Espírito Santo</option>
+                                    <option value="GO">Goiás</option>
+                                    <option value="MA">Maranhão</option>
+                                    <option value="MT">Mato Grosso</option>
+                                    <option value="MS">Mato Grosso do Sul</option>
+                                    <option value="MG">Minas Gerais</option>
+                                    <option value="PA">Pará</option>
+                                    <option value="PB">Paraíba</option>
+                                    <option value="PR">Paraná</option>
+                                    <option value="PE">Pernambuco</option>
+                                    <option value="PI">Piauí</option>
+                                    <option value="RJ">Rio de Janeiro</option>
+                                    <option value="RN">Rio Grande do Norte</option>
+                                    <option value="RS">Rio Grande do Sul</option>
+                                    <option value="RO">Rondônia</option>
+                                    <option value="RR">Roraima</option>
+                                    <option value="SC">Santa Catarina</option>
+                                    <option value="SP">São Paulo</option>
+                                    <option value="SE">Sergipe</option>
+                                    <option value="TO">Tocantins</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group checkbox-group">
+                            <input type="checkbox" id="terms" required>
+                            <label for="terms">Aceito os termos e condições de compra</label>
+                        </div>
+
+                        <button type="submit" class="checkout-button" id="submit-checkout">
+                            Continuar para pagamento <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </form>
+
+                    <h2 class="section-title" style="margin-top: 20px;"><i class="fas fa-credit-card"></i> Pagamento
+                    </h2>
+
+                    <div id="card-payment-brick-container"></div>
+            </div>
+        </main>
+
+        <!-- Modal de feedback -->
+        <div id="feedback-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-modal">&times;</span>
+                <div id="modal-icon"></div>
+                <h3 id="modal-title">Título do feedback</h3>
+                <p id="modal-message">Mensagem de feedback</p>
+                <button id="modal-button" class="modal-button">OK</button>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="checkout-footer">
+            <div class="container">
+                <p><i class="fas fa-lock"></i> Compra 100% segura</p>
+                <p><i class="fas fa-shield-alt"></i> Dados protegidos</p>
+            </div>
+        </footer>
+    </div>
+
+    <script type="module" src="./js/components/checkout.js"></script>
+</body>
+
+</html>

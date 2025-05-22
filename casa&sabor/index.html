@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Casa & Sabor - Produtos Artesanais e Hortifruti</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/components/header.css">
+    <link rel="stylesheet" href="css/components/products.css">
+    <link rel="stylesheet" href="css/components/cart.css">
+
+    <!-- VLibras -->
+    <div vw class="enabled">
+        <div vw-access-button class="active"></div>
+        <div vw-plugin-wrapper>
+            <div class="vw-plugin-top-wrapper"></div>
+        </div>
+    </div>
+    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+    <script>
+        new window.VLibras.Widget('https://vlibras.gov.br/app');
+    </script>
+
+</head>
+
+<body>
+    <!-- Overlay do Carrinho -->
+    <div id="cart-overlay" class="cart-overlay"></div>
+
+    <!-- Sidebar do Carrinho -->
+    <div id="cart-sidebar" class="cart-sidebar">
+        <div class="cart-header">
+            <h3>Seu Carrinho</h3>
+            <button id="close-cart" class="close-cart">&times;</button>
+        </div>
+        <div class="cart-items" id="cart-items-container">
+            <!-- Itens serão inseridos aqui via JS -->
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total-container">
+                <p class="cart-total">Total: <span id="cart-total">R$ 0,00</span></p>
+                <button id="clear-cart" class="clear-cart-btn">Limpar Carrinho</button>
+            </div>
+            <button id="checkout-btn" class="checkout-btn">Finalizar Compra</button>
+        </div>
+    </div>
+    <header class="main-header">
+        <div class="banner">
+            <img src="images/banner.png" alt="Casa & Sabor" class="banner-image">
+            <div class="logo-container">
+                <img src="images/logo.png" alt="Casa & Sabor" class="logo">
+            </div>
+        </div>
+
+        <div class="search-bar">
+            <div class="search-container">
+                <input type="text" id="search-input" placeholder="Buscar produtos..." class="search-input">
+                <button id="search-button" class="search-button">🔍</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <section class="product-section">
+            <h2 class="section-title hortifruti">HORTIFRUTI</h2>
+            <div class="product-grid" id="hortifruti-grid">
+            </div>
+        </section>
+
+        <section class="product-section">
+            <h2 class="section-title caseiros">PRODUTOS CASEIROS</h2>
+            <div class="product-grid" id="caseiros-grid">
+            </div>
+        </section>
+    </main>
+
+    <button class="floating-cart" id="floating-cart">
+        <span class="cart-icon">🛒</span>
+        <span class="cart-text">Ver Carrinho (<span id="cart-count">0</span> itens - R$ <span
+                id="cart-sum">0,00</span>)</span>
+    </button>
+
+    <script type="module" src="js/main.js"></script>
+</body>
+
+</html>
