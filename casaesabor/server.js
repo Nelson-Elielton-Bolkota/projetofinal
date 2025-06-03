@@ -6,19 +6,15 @@ const cors = require('cors');
 const path = require('path');
 const mercadopagoService = require('./js/components/mercadopagoService');
 
-
 const productRoutes = require('./routes/products');
 const orderRoutes = require('./routes/orders');
 
-
 const app = express();
-
 
 const PORT = process.env.PORT || 5000;
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/armazem';
 const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:3000';
 const BACKEND_URL = process.env.BACKEND_URL || `http://localhost:${PORT}`;
-
 
 const corsOptions = {
   origin: 'http://localhost:3000',
@@ -37,13 +33,13 @@ app.use((req, res, next) => {
   res.header('Access-Control-Allow-Credentials', 'true');
   next();
 });
+
 app.options('*', cors(corsOptions));
 app.use(express.json({ limit: '1mb' }));
 app.use(express.urlencoded({ extended: true }));
 
-
-app.use(express.static(path.join(__dirname, '..')));
-
+// REMOVA ESTA LINHA - ELA ESTÁ CAUSANDO O ERRO:
+// app.use(express.static(path.join(__dirname, '..')));
 
 if (process.env.NODE_ENV !== 'production') {
   app.use((req, res, next) => {
@@ -52,12 +48,8 @@ if (process.env.NODE_ENV !== 'production') {
   });
 }
 
-
 app.use('/api/products', productRoutes);
 app.use('/api/admin/orders', orderRoutes);
-
-
-
 
 app.post('/api/create-payment', async (req, res) => {
   try {
@@ -91,8 +83,6 @@ app.post('/api/create-payment', async (req, res) => {
   }
 });
 
-
-
 app.post('/api/process-payment', async (req, res) => {
   try {
     console.log('🔄 Recebendo requisição para processar pagamento:', {
@@ -105,7 +95,6 @@ app.post('/api/process-payment', async (req, res) => {
     
     console.log(`✅ Pagamento processado - Status: ${payment.status}, ID: ${payment.id}`);
 
-
     const responseData = {
       status: payment.status,
       order_status: payment.order_status || 'pending',
@@ -115,7 +104,6 @@ app.post('/api/process-payment', async (req, res) => {
       card_last_four: payment.card?.last_four_digits,
       installments: payment.installments
     };
-
 
     switch(payment.status) {
       case 'approved':
@@ -144,7 +132,6 @@ app.post('/api/process-payment', async (req, res) => {
         console.log(`❓ STATUS DESCONHECIDO: ${payment.status}`);
     }
 
-
     console.log(`📤 Enviando resposta:`, {
       status: responseData.status,
       message: responseData.message
@@ -158,7 +145,6 @@ app.post('/api/process-payment', async (req, res) => {
     let errorMessage = 'Erro ao processar pagamento';
     let statusCode = 500;
     
-
     if (error.status) statusCode = error.status;
     if (error.cause) {
       const mpErrors = Array.isArray(error.cause) ? error.cause : [error.cause];
@@ -175,6 +161,7 @@ app.post('/api/process-payment', async (req, res) => {
     });
   }
 });
+
 app.get('/api/payment/:id/status', async (req, res) => {
   try {
     const { id } = req.params;
@@ -187,15 +174,16 @@ app.get('/api/payment/:id/status', async (req, res) => {
     });
   }
 });
+
 app.get('/api/admin/orders', async (req, res) => {
   try {
-
     const orders = await Order.find().sort({ createdAt: -1 });
     res.json(orders);
   } catch (error) {
     res.status(500).json({ error: 'Erro ao buscar pedidos' });
   }
 });
+
 app.put('/api/admin/orders/:id', async (req, res) => {
   try {
     const { status } = req.body;
@@ -210,7 +198,6 @@ app.put('/api/admin/orders/:id', async (req, res) => {
   }
 });
 
-
 app.post('/api/webhook/mercadopago', async (req, res) => {
   try {
     console.log('Webhook recebido:', req.query, req.body);
@@ -222,16 +209,30 @@ app.post('/api/webhook/mercadopago', async (req, res) => {
   }
 });
 
-
 app.post('/api/create-preference', async (req, res) => {
   console.log('Redirecionando /api/create-preference para /api/create-payment');
   req.url = '/api/create-payment';
   app._router.handle(req, res);
 });
 
+// REMOVA TAMBÉM ESTAS LINHAS - ELAS TENTAM SERVIR ARQUIVOS HTML QUE NÃO EXISTEM:
+// app.get(['/', '/admin', '/carrinho', '/admin.html', '/checkout.html', '/sucess.html', '/error-confirmation.html', '/pending-confirmation.html'], (req, res) => {
+//   res.sendFile(path.join(__dirname, '..', path.basename(req.path) || 'index.html'));
+// });
 
-app.get(['/', '/admin', '/carrinho', '/admin.html', '/checkout.html', '/sucess.html', '/error-confirmation.html', '/pending-confirmation.html'], (req, res) => {
-  res.sendFile(path.join(__dirname, '..', path.basename(req.path) || 'index.html'));
+// ADICIONE UMA ROTA SIMPLES PARA A RAIZ PARA TESTAR:
+app.get('/', (req, res) => {
+  res.json({ 
+    message: 'Casa&Sabor API está funcionando!', 
+    timestamp: new Date().toISOString(),
+    endpoints: [
+      'GET /api/products',
+      'POST /api/create-payment',
+      'POST /api/process-payment',
+      'GET /api/admin/orders',
+      'GET /health'
+    ]
+  });
 });
 
 app.use((err, req, res, next) => {
@@ -245,7 +246,6 @@ app.use((err, req, res, next) => {
 app.get('/health', (req, res) => {
   res.status(200).json({ status: 'UP', timestamp: new Date().toISOString() });
 });
-
 
 const connectDB = async (retries = 5, delay = 5000) => {
   let attempt = 1;
@@ -274,7 +274,6 @@ const connectDB = async (retries = 5, delay = 5000) => {
   }
 };
 
-
 const startServer = async () => {
   await connectDB();
 
@@ -288,11 +287,9 @@ const startServer = async () => {
     `);
   });
 
-
   setInterval(() => {
     mercadopagoService.cleanExpiredSessions();
   }, 60 * 60 * 1000);
-
 
   const gracefulShutdown = () => {
     console.log('Recebido sinal para encerrar o servidor...');
