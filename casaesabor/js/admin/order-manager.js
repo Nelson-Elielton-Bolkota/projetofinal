@@ -1,7 +1,7 @@
 
 import { showAlert, showLoader, hideLoader, formatCurrency, escapeHtml } from './utils.js';
 
-const ORDERS_API_URL = 'http://localhost:5000/api/admin/orders';
+const ORDERS_API_URL = 'https://casaesabor.onrender.com/api/admin/orders';
 
 class OrderManager {
     constructor() {

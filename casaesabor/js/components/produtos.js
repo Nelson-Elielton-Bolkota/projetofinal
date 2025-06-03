@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:5000/api/products';
+const API_URL = 'https://casaesabor.onrender.com/api/products';
 
 export default class Products {
     constructor() {

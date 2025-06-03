@@ -3,7 +3,7 @@ import Products from './components/produtos.js';
 import { loadVLibras } from './components/vlibras-loader.js';
 
 
-const API_BASE_URL = 'http://localhost:5000';
+const API_BASE_URL = 'https://casaesabor.onrender.com';
 const CART_ANIMATION_DURATION = 1000; 
 
 

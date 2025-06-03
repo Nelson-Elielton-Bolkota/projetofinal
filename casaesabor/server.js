@@ -11,13 +11,21 @@ const orderRoutes = require('./routes/orders');
 
 const app = express();
 
+// Configurações baseadas no seu .env
 const PORT = process.env.PORT || 5000;
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/armazem';
-const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:3000';
-const BACKEND_URL = process.env.BACKEND_URL || `http://localhost:${PORT}`;
+const MONGODB_URI = process.env.MONGODB_URI;
+const FRONTEND_URL = process.env.FRONTEND_URL;
+const BACKEND_URL = process.env.BACKEND_URL;
+const NODE_ENV = process.env.NODE_ENV || 'development';
 
+// Configuração de CORS atualizada
 const corsOptions = {
-  origin: 'http://localhost:3000',
+  origin: [
+    FRONTEND_URL,
+    'https://casa-sabor-phi.vercel.app', // redundância para segurança
+    'http://localhost:3000', // para desenvolvimento local
+    'http://127.0.0.1:3000'  // para desenvolvimento local
+  ],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
   credentials: true,
@@ -25,17 +33,7 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-  res.header('Access-Control-Allow-Credentials', 'true');
-  next();
-});
-
-app.options('*', cors(corsOptions));
-app.use(express.json({ limit: '1mb' }));
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // REMOVA ESTA LINHA - ELA ESTÁ CAUSANDO O ERRO:

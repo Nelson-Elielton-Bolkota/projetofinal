@@ -95,7 +95,7 @@ async function processPayment(paymentId, cardFormData) {
             throw new Error('Valor total do carrinho é inválido');
         }
 
-        const response = await fetch('http://localhost:5000/api/process-payment', {
+        const response = await fetch('https://casaesabor.onrender.com/api/process-payment', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
